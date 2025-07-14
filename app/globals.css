@@ -143,4 +143,34 @@ body {
 .animate-gradient {
   background-size: 200% 200%;
   animation: gradient-shift 4s ease infinite;
+}
+
+@keyframes slide-in-left {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-out-left {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+.slide-in-left {
+  animation: slide-in-left 0.3s ease-out;
+}
+
+.slide-out-left {
+  animation: slide-out-left 0.3s ease-in;
 } 

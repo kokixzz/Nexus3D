@@ -1,8 +1,9 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { Suspense } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import LoadingScreen from '@/components/LoadingScreen'
+import LeftPanel from '@/components/LeftPanel'
 
 const StaticScene = dynamic(() => import('@/components/StaticScene'), {
   ssr: false,
@@ -19,6 +20,17 @@ const PerformanceAnalyzer = dynamic(() => import('@/components/PerformanceAnalyz
 })
 
 export default function Home() {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
   return (
     <div className="min-h-screen">
       <main className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-delft-50 to-delft-100 dark:from-delft-900 dark:to-delft-950">
@@ -44,16 +56,7 @@ export default function Home() {
         <StaticScene />
       </Suspense>
 
-      {/* <div className="absolute top-1/2 left-8 z-10 transform -translate-y-1/2 hidden lg:block float-gentle">
-        <div className="bg-white/15 dark:bg-delft-900/15 backdrop-blur-md rounded-xl p-6 max-w-xs pulse-glow fade-in-up">
-          <h3 className="text-2xl font-bold text-delft-900 dark:text-delft-100 mb-3">
-            Interactive
-          </h3>
-          <p className="text-sm text-delft-700 dark:text-delft-300 leading-relaxed">
-            Smooth 60fps animations powered by cutting-edge WebGL technology
-          </p>
-        </div>
-      </div> */}
+      <LeftPanel isMobile={isMobile} />
 
       <div className="absolute top-1/3 right-8 z-10 hidden lg:block float-gentle" style={{animationDelay: '1s'}}>
         <div className="bg-white/15 dark:bg-delft-900/15 backdrop-blur-md rounded-xl p-6 max-w-xs pulse-glow fade-in-up">
